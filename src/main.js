@@ -1,4 +1,5 @@
 import './style.css';
+import { heroArt, emptyArt, testsArt, companyArt } from './art.js';
 import { jsPDF } from 'jspdf';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
@@ -31,8 +32,8 @@ const inp = (p, l, v, t = 'text') => `<label>${l}<input type="${t}" data-p="${p}
 const views = {
   home() {
     const q = S.q.toLowerCase(), list = S.reports.filter((r) => (r.certNo + r.client.name).toLowerCase().includes(q));
-    return `<h2>Reports</h2><input id="q" placeholder="Search by certificate no. or client" value="${esc(S.q)}">` +
-      (list.length ? list.map((r) => `<div class="card"><b>${esc(r.certNo)}</b><small>${esc(r.client.name || 'No client yet')} · ${esc(r.date)}</small><div class="row"><span><button data-a="open" data-id="${r.id}">Open</button><button data-a="pdf" data-id="${r.id}">PDF</button><button data-a="dup" data-id="${r.id}">Copy</button></span><button class="danger" data-a="del" data-id="${r.id}">Delete</button></div></div>`).join('') : '<p class="empty">No reports yet. Tap New Report to start.</p>') +
+    return heroArt + `<h2>Reports</h2><input id="q" placeholder="Search by certificate no. or client" value="${esc(S.q)}">` +
+      (list.length ? list.map((r) => `<div class="card"><b>${esc(r.certNo)}</b><small>${esc(r.client.name || 'No client yet')} · ${esc(r.date)}</small><div class="row"><span><button data-a="open" data-id="${r.id}">Open</button><button data-a="pdf" data-id="${r.id}">PDF</button><button data-a="dup" data-id="${r.id}">Copy</button></span><button class="danger" data-a="del" data-id="${r.id}">Delete</button></div></div>`).join('') : emptyArt + '<p class="empty">No reports yet. Tap New Report to start.</p>') +
       '<button class="fab" data-a="newr">+ New Report</button>';
   },
   edit() {
@@ -48,14 +49,14 @@ const views = {
       `<button data-a="addpage">+ Add page</button><button class="fab" data-a="pdf" data-id="${r.id}">Export PDF</button>`;
   },
   lib() {
-    return '<h2>Test Library</h2>' + S.lib.map((c, ci) => `<div class="card"><div class="row"><input data-p="lib.${ci}.cat" value="${esc(c.cat)}" style="flex:1"><button class="danger" data-a="rmlcat" data-i="${ci}">Delete</button></div>` +
+    return testsArt + '<h2>Test Library</h2>' + S.lib.map((c, ci) => `<div class="card"><div class="row"><input data-p="lib.${ci}.cat" value="${esc(c.cat)}" style="flex:1"><button class="danger" data-a="rmlcat" data-i="${ci}">Delete</button></div>` +
       c.tests.map((t, ti) => `<div class="trow"><input data-p="lib.${ci}.tests.${ti}.name" value="${esc(t.name)}" placeholder="Test"><input data-p="lib.${ci}.tests.${ti}.std" value="${esc(t.std)}" placeholder="Standard"><button class="danger" data-a="rmtest" data-i="${ci}" data-j="${ti}">✕</button><input data-p="lib.${ci}.tests.${ti}.unit" value="${esc(t.unit)}" placeholder="Unit"></div>`).join('') +
       `<button data-a="addtest" data-i="${ci}">+ Test</button></div>`).join('') +
       '<div class="card"><h3>New category</h3><input id="newcat" placeholder="e.g. Chemical Analysis"><button data-a="addlcat">Add category</button></div>';
   },
   co() {
     const c = S.company;
-    return `<h2>Company</h2><div class="card">${c.logo ? `<img src="${c.logo}" alt="Logo" style="max-height:70px">` : '<p class="empty">No logo yet.</p>'}<label>Company logo<input id="logo" type="file" accept="image/*"></label>${c.logo ? '<button class="danger" data-a="rmlogo">Remove logo</button>' : ''}
+    return companyArt + `<h2>Company</h2><div class="card">${c.logo ? `<img src="${c.logo}" alt="Logo" style="max-height:70px">` : '<p class="empty">No logo yet.</p>'}<label>Company logo<input id="logo" type="file" accept="image/*"></label>${c.logo ? '<button class="danger" data-a="rmlogo">Remove logo</button>' : ''}
 ${inp('company.name', 'Company name', c.name)}${inp('company.addr', 'Address', c.addr)}${inp('company.contact', 'Phone, email, website', c.contact)}${inp('company.signatory', 'Signatory name and title', c.signatory)}<label>Footer note<textarea rows="4" data-p="company.disclaimer">${esc(c.disclaimer)}</textarea></label></div>`;
   },
 };
