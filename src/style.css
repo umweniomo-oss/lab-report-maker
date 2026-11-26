@@ -23,3 +23,6 @@ button:active{transform:scale(.94)}button.danger{border-color:var(--err);color:v
 .art{width:100%;height:auto;display:block;border-radius:14px;margin-bottom:10px}.art.sm{max-width:200px;margin:10px auto}
 .drop{animation:drip 2.2s ease-in infinite}.drop.d2{animation-delay:.9s}@keyframes drip{0%{transform:translateY(-8px);opacity:0}30%{opacity:1}100%{transform:translateY(40px);opacity:0}}
 .flame{animation:fl .8s ease-in-out infinite alternate}@keyframes fl{from{opacity:.55}to{opacity:1}}
+.photo{position:relative;height:130px;border-radius:14px;background:center/cover;margin-bottom:10px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:12px 14px;color:#fff}
+.photo::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,#0a1a26ee,#0a1a2633)}.photo>*{position:relative;margin:0}.photo h2{font-size:1.5rem}.photo small{color:#d7e4ea}
+img.art{object-fit:cover;height:130px}
